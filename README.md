@@ -1,6 +1,4 @@
-Here is the markdown version of your Jenkins setup instructions:
 
-```markdown
 # Jenkins Setup with Pre-installed Plugins and User Roles
 
 ## Pre-installed Plugins:
@@ -42,7 +40,7 @@ Three user roles are configured, each with matching usernames and passwords:
 
 ## Usage Instructions:
 
-### 1. Pull the Docker Image:
+ 1. Pull the Docker Image:
 
 
 ```bash
