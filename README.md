@@ -1,6 +1,9 @@
+Here is the markdown version of your Jenkins setup instructions:
 
+```markdown
+# Jenkins Setup with Pre-installed Plugins and User Roles
 
-**Pre-installed Plugins:**
+## Pre-installed Plugins:
 
 - **Git:** 5.7.0
 - **Workflow Aggregator:** 600.vb_57cdd26fdd7
@@ -18,7 +21,7 @@
 - **Prometheus Metrics:** 801.v98e119d8eeda_
 - **NodeJS Plugin:** 1.6.2
 
-**Predefined User Roles:**
+## Predefined User Roles:
 
 Three user roles are configured, each with matching usernames and passwords:
 
@@ -26,33 +29,38 @@ Three user roles are configured, each with matching usernames and passwords:
   - Username: `admin`
   - Password: `admin`
   - Permissions: Full administrative access.
+
 - **Developer:**
   - Username: `developer`
   - Password: `developer`
   - Permissions: Read and build permissions.
+
 - **Viewer:**
   - Username: `viewer`
   - Password: `viewer`
   - Permissions: Read-only access.
 
-**Usage Instructions:**
+## Usage Instructions:
 
-1. **Pull the Docker Image:**
+### 1. Pull the Docker Image:
 
-   ```bash
-   docker pull cuxuanthoai/jenkins-jcasc:latest
-   ```
+```bash
+docker pull cuxuanthoai/jenkins-jcasc:latest
+```
 
-2. **Run the Jenkins Container:**
+### 2. Run the Jenkins Container:
 
-   ```bash
-   docker run -d -p 8080:8080 -p 50000:50000 \
-  -v jenkins_home:/var/jenkins_home \
+```bash
+docker run -d -p 8080:8080 -p 50000:50000 \
+  -v /Users/mac/Documents/jenkins:/var/jenkins_home \
   cuxuanthoai/jenkins-jcasc:latest
-   ```
+```
 
-   This command starts a Jenkins instance accessible at `http://localhost:8080`.
+This command starts a Jenkins instance accessible at `http://localhost:8080`.
 
-**Security Configuration:**
+## Security Configuration:
 
-The Jenkins instance is configured with a local security realm and a project-based matrix authorization strategy, ensuring appropriate access levels based on user roles.
+The Jenkins instance is configured with a **local security realm** and a **project-based matrix authorization strategy**, ensuring appropriate access levels based on user roles.
+```
+
+This markdown format includes all the necessary information in a structured manner, including plugins, roles, usage instructions, and security configuration.
