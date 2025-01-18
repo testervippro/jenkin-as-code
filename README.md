@@ -51,8 +51,9 @@ docker pull cuxuanthoai/jenkins-jcasc:latest
 
 ```bash
 docker run -d -p 8080:8080 -p 50000:50000 \
-  -v /Users/mac/Documents/jenkins:/var/jenkins_home \
+  -v jenkins_data:/var/jenkins_home \
   cuxuanthoai/jenkins-jcasc:latest
+
 ```
 
 This command starts a Jenkins instance accessible at `http://localhost:8080`.
