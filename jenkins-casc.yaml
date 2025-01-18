@@ -33,6 +33,10 @@ jenkins:
 
 # Tool Configuration
 tool:
+  git:
+    installations:
+      - name: "Default"
+        home: "/usr/bin/git"
   maven:
     installations:
       - name: maven3
@@ -52,32 +56,40 @@ jobs:
               pipeline {
                 agent any
 
+                tools {
+                  git 'Default' // Use the Git tool configured above
+                  maven 'maven3' // Use the Maven tool configured above
+                }
+
                 stages {
-                  stage('Test Execution') {
+                  stage('Checkout Code') {
                     steps {
-                      script {
-                        // Clean the target folder and run tests depending on the operating system
-                        if (isUnix()) {
-                          // For Unix-based systems, use Maven Wrapper
-                          sh './mvnw clean test -Pweb-execution -Dsuite=local -Dtarget=local -Dheadless=false -Dbrowser=chrome'
-                        } else {
-                          // For Windows, use Maven Wrapper with .cmd
-                          bat 'mvnw.cmd clean test -Pweb-execution -Dsuite=local -Dtarget=local -Dheadless=false -Dbrowser=chrome'
-                        }
-                      }
+                      git branch: 'main', url: 'https://github.com/your-repo/your-project.git'
+                    }
+                  }
+
+                  stage('Build') {
+                    steps {
+                      sh 'mvn clean install'
+                    }
+                  }
+
+                  stage('Test') {
+                    steps {
+                      sh 'mvn test'
+                    }
+                  }
+
+                  stage('Deploy') {
+                    steps {
+                      echo 'Deploying...'
                     }
                   }
                 }
 
                 post {
                   always {
-                    // Publish Allure report as HTML using the HTML Publisher plugin
-                    publishHTML(target: [
-                      reportDir: 'target/allure-report', // Path to Allure report folder
-                      reportFiles: 'index.html', // Main file in the Allure report
-                      reportName: 'Report', // Name of the report in Jenkins UI
-                      alwaysLinkToLastBuild: true
-                    ])
+                    junit '**/target/surefire-reports/*.xml' // Publish JUnit test results
                   }
                 }
               }
