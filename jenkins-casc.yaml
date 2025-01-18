@@ -33,10 +33,6 @@ jenkins:
 
 # Tool Configuration
 tool:
-  git:
-    installations:
-      - name: "Default"
-        home: "/usr/bin/git"
   maven:
     installations:
       - name: maven3
@@ -51,40 +47,40 @@ jobs:
   - script: >
       pipelineJob('example-pipeline-job') {
         definition {
-         cps {
+          cps {
             script('''
-                pipeline {
-                    agent any
+              pipeline {
+                agent any
 
-                    stages {
-                        stage('Test Execution') {
-                            steps {
-                                script {
-                                    // Clean the target folder and run tests depending on the operating system
-                                    if (isUnix()) {
-                                        // For Unix-based systems, use Maven Wrapper
-                                        sh './mvnw clean test -Pweb-execution -Dsuite=local -Dtarget=local -Dheadless=false -Dbrowser=chrome'
-                                    } else {
-                                        // For Windows, use Maven Wrapper with .cmd
-                                        bat 'mvnw.cmd clean test -Pweb-execution -Dsuite=local -Dtarget=local -Dheadless=false -Dbrowser=chrome'
-                                    }
-                                }
-                            }
+                stages {
+                  stage('Test Execution') {
+                    steps {
+                      script {
+                        // Clean the target folder and run tests depending on the operating system
+                        if (isUnix()) {
+                          // For Unix-based systems, use Maven Wrapper
+                          sh './mvnw clean test -Pweb-execution -Dsuite=local -Dtarget=local -Dheadless=false -Dbrowser=chrome'
+                        } else {
+                          // For Windows, use Maven Wrapper with .cmd
+                          bat 'mvnw.cmd clean test -Pweb-execution -Dsuite=local -Dtarget=local -Dheadless=false -Dbrowser=chrome'
                         }
+                      }
                     }
-
-                    post {
-                        always {
-                            // Publish Allure report as HTML using the HTML Publisher plugin
-                            publishHTML(target: [
-                                reportDir: 'target/allure-report', // Path to Allure report folder
-                                reportFiles: 'index.html', // Main file in the Allure report
-                                reportName: 'Report', // Name of the report in Jenkins UI
-                                alwaysLinkToLastBuild: true
-                            ])
-                        }
-                    }
+                  }
                 }
+
+                post {
+                  always {
+                    // Publish Allure report as HTML using the HTML Publisher plugin
+                    publishHTML(target: [
+                      reportDir: 'target/allure-report', // Path to Allure report folder
+                      reportFiles: 'index.html', // Main file in the Allure report
+                      reportName: 'Report', // Name of the report in Jenkins UI
+                      alwaysLinkToLastBuild: true
+                    ])
+                  }
+                }
+              }
             ''')
           }
         }
